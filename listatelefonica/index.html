@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html ng-app="listaTelefonica">
+    <meta charset="utf-8"/>
+  <head>
+    <title>Lista Telefonica</title>
+
+    <link rel="stylesheet"type="text/css" href="./css/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet"type="text/css" href="./css/style.css">
+
+    <script src="./lib/angular.min.js"></script>
+    <script src="./lib/angular-messages.min.js"></script>
+
+    <script src="./js/app.js"></script>
+    <script src="./js/controllers/listaTelefonicaCtrl.js"></script>
+
+    <script>
+
+
+    </script>
+  </head>
+  <body ng-controller="listaTelefonicaCtrl">
+    <div class="jumbotron">
+      <h3>{{app}}</h3>
+      {{contatos}}
+      <input class="form-control" type="text" ng-model="cirterioDeBusca" placeholder="O que você está buscando" />
+      <table ng-if="contatos.length > 0" class="table table-striped">
+        <tr>
+          <th>#</th>
+          <th><a href="" ng-click="ordenarPor('nome')">Nome</a></th>
+          <th><a href="" ng-click="ordenarPor('nome')">Telefone</a></th>
+          <th><a href="" ng-click="ordenarPor('nome')">Operadora</a></th>
+          <th><a href="" ng-click="ordenarPor('nome')">Data</a></th>
+          <th><a href="" ng-click="ordenarPor('nome')">Cor</a></th>
+        </tr>
+        <tr ng-class="{warning: contato.selecionado}" ng-repeat="contato in contatos | filter:cirterioDeBusca | orderBy: criterioDeOrdenacao:direcaoOrdenacao">
+            <td><input type="checkbox" ng-model="contato.selecionado"/></td>
+          <td>{{contato.nome | uppercase}}</td>
+          <td>{{contato.telefone}}</td>
+          <td>{{contato.operadora.codigo+' - '+contato.operadora.nome}}</td>
+          <td>{{contato.data | date:'dd/mm/yyyy HH:mm'}}</td>
+          <td style="padding:10px" ng-style="{'background-color':contato.cor}"></td>
+        </tr>
+
+        <!-- OUTRA FORMA UTILIZANDO KEY E VALUE -->
+        <!-- <tr ng-repeat="contato in contatos">
+          <td ng-repeat="(key, value) in contato">
+            {{key +' - '+ value}}
+          </td>
+        </tr> -->
+      </table>
+      <hr />
+
+      <!-- É valido: {{contatoForm.$valid}}<br />
+      É invalido: {{contatoForm.$invalid}} -->
+
+      <form name="contatoForm">
+          <input class="form-control" name="nome" type="text" ng-model="contato.nome" placeholder="Nome" ng-required="true" ng-minlength="10"/>
+
+          <input class="form-control" name="telefone" type="text" ng-model="contato.telefone" placeholder="Telefone" ng-required="true" ng-pattern="/^\d{4,5}-\d{4}$/"/>
+
+          <select class="form-control" ng-model="contato.operadora" ng-options="operadora.nome group by operadora.categoria for operadora in operadoras">
+            <option value="">Selecione uma operadora</option>
+          </select>
+      </form>
+
+
+      <div ng-messages="contatoForm.nome.$error" class="alert alert-danger" role="alert">
+          <h4 style="text-align: left">Campo Nome</h4>
+          <ul style="text-align:left;">
+              <li ng-message="required">Preencha o nome</li>
+              <li ng-message="minlength">Nome precisa ser preenchido com no minimo 10 caracteres</li>
+          </ul>
+      </div>
+
+      <div ng-messages="contatoForm.telefone.$error" class="alert alert-danger" role="alert">
+          <h4 style="text-align: left;">Campo Telefone</h4>
+          <ul style="text-align:left;">
+              <li ng-message="required">Preencha o telefone</li>
+              <li ng-message="pattern">Preencha o telefone corretamente 9999-9999 com 4 ou 5 digitos antes</li>
+          </ul>
+      </div>
+
+      <button class="btn btn-primary btn-block" ng-click="adicionarContato(contato)" ng-disabled="contatoForm.$invalid">Adicionar Contato</button>
+
+      <button class="btn btn-danger btn-block" ng-click="apagarContatos(contatos)" ng-if="isContatoSelecionado(contatos)">Apagar Contatos</button>
+    </div>
+    <!-- so funciona num servidor http e nao file://-->
+    <!-- <div ng-include="'footer.html'"></div> -->
+
+
+  </body>
+</html>
