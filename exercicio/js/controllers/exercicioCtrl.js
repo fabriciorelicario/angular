@@ -39,20 +39,15 @@ angular.module("exercicio").controller("exercicioCtrl", function($scope){
     };
 
     $scope.checkAllUsuarios = function(usuarios){
-
-        if(this.checked){
-            usuarios.checked = false;
+        if(this.checkedAll){
+            return usuarios.forEach(function(elem){
+                elem.checked = true;
+            });
         } else {
-            usuarios.checked = true;
+            return usuarios.forEach(function(elem){
+                elem.checked = false;
+            });
         }
-
-        // return usuarios.forEach(function(elem){
-        //     if(this.checked){
-        //         elem.checked = false;
-        //     } else {
-        //         elem.checked = true;
-        //     }
-        // });
     };
 
     $scope.checked = "highlight";

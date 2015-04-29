@@ -28,13 +28,14 @@
         <div class="uk-vertical-align centered uk-height-1-1">
             <div class="uk-vertical-align-middle">
                 <div class="uk-panel uk-panel-box">
-{{usuarios}}
+
+
 
                     <table class="uk-table uk-table-condensed">
                         <caption><h3 class="uk-panel-title"><i class="uk-icon-user"></i> Lista de Usuários</h3></caption>
                         <thead>
                             <tr>
-                                <th><input ng-click="checkAllUsuarios(usuarios)" ng-model="checked" type="checkbox"/></th>
+                                <th><input ng-click="checkAllUsuarios(usuarios)" ng-model="checkedAll" type="checkbox"/></th>
                                 <th>Nome</th>
                                 <th>Telefone</th>
                                 <th>Operadora</th>
@@ -53,6 +54,7 @@
                     </table>
 
                     <br />
+
                     <form class="uk-form">
                         <fieldset data-uk-margin>
                             <legend><h3 class="uk-panel-title"><i class="uk-icon-plus"></i> Cadastro de Usuários</h3></legend>
@@ -67,9 +69,8 @@
 
                         </fieldset>
                     </form>
+
                     <br />
-
-
 
                     <button ng-click="addUsuario(form)" ng-disabled="!form.nome || !form.telefone || !form.operadora" class="uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom">Adicionar</button>
                     <button ng-click="copyUsuario(usuarios)" ng-disabled="!isUsuarioChecked(usuarios)" class="uk-button uk-button-success uk-width-1-1 uk-margin-small-bottom">Copiar</button>
