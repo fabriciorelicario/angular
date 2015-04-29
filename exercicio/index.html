@@ -21,6 +21,16 @@
         .highlight{
             background-color: #fcf8e3;
         }
+        .tm-navbar {
+            padding: 15px 0px;
+            border: medium none;
+            background: none repeat scroll 0% 0% #000;
+            position: relative;
+        }
+        .tm-navbar div{
+            color: #FFF;
+            text-shadow: none;
+        }
         </style>
 
     </head>
@@ -28,10 +38,35 @@
         <div class="uk-vertical-align centered uk-height-1-1">
             <div class="uk-vertical-align-middle">
                 <div class="uk-panel uk-panel-box">
+                
+                <div ng-include="'view/head.html'"></div>
+
+                    <!-- MENSAGENS DO CAMPO DE VALIDACAO -->
+                    <!-- USANDO AS PROPRIEDADES $VALID E $INVALID -->
+                    <!-- USANDO O OBJETO $ERROR -->
+                    <!-- {form}{name_input}{} -->
+                    <div ng-if="usuarioForm.$invalid && usuarioForm.$dirty" class="uk-alert uk-alert-warning" data-uk-alert="">
+                        <ul style="list-style: none;">
+                           <li ng-show="usuarioForm.nome.$error.required">
+                                <i class="uk-icon-exclamation-circle"></i> Preencha o seu nome.
+                           </li>
+                           <li ng-show="usuarioForm.nome.$error.minlength">
+                                <i class="uk-icon-exclamation-circle"></i> Preencha o seu nome com no minimo 10 caracteres.
+                           </li>
+                           <li ng-show="usuarioForm.telefone.$error.required">
+                                <i class="uk-icon-exclamation-circle"></i> Preencha o seu telefone.
+                           </li>
+                           <li ng-show="usuarioForm.telefone.$error.pattern">
+                                <i class="uk-icon-exclamation-circle"></i> Preencha com telefone válido Ex: "(99) 9999-9999" .
+                           </li>
+                           <li ng-show="usuarioForm.operadora.$error.required">
+                                <i class="uk-icon-exclamation-circle"></i> Preencha a operadora refenrente ao telefone cadastrado" .
+                           </li> 
+                        </ul>
+                    </div>
 
 
-
-                    <table class="uk-table uk-table-condensed">
+                    <table ng-if="usuarios.length > 0" class="uk-table uk-table-condensed">
                         <caption><h3 class="uk-panel-title"><i class="uk-icon-user"></i> Lista de Usuários</h3></caption>
                         <thead>
                             <tr>
@@ -39,7 +74,7 @@
                                 <th>Nome</th>
                                 <th>Telefone</th>
                                 <th>Operadora</th>
-                                <th>Cor</th>
+                                <!-- <th>Cor</th> -->
                             </tr>
                         </thead>
                         <tbody>
@@ -48,22 +83,22 @@
                                 <td>{{item.nome}}</td>
                                 <td>{{item.telefone}}</td>
                                 <td>{{item.operadora.codigo+' - '+item.operadora.nome}}</td>
-                                <td>{{item.cor}}</td>
+                                <!-- <td><div class="uk-button uk-button-{{item.cor}}"></div></td> -->
                             </tr>
                         </tbody>
                     </table>
 
                     <br />
 
-                    <form class="uk-form">
+                    <form class="uk-form" name="usuarioForm">
                         <fieldset data-uk-margin>
                             <legend><h3 class="uk-panel-title"><i class="uk-icon-plus"></i> Cadastro de Usuários</h3></legend>
 
-                            <input ng-model="form.nome" type="text" name="nome" placeholder="Nome">
-                            <input ng-model="form.telefone" type="text" name="telefone" placeholder="Telefone">
+                            <input ng-model="form.nome" type="text" name="nome" placeholder="Nome" ng-required="true" ng-minlength="10" />
+                            <input ng-model="form.telefone" type="text" name="telefone" placeholder="Telefone" ng-required="true" ng-pattern="/^\(\d{2}\)\s\d{4,5}-\d{4}$/" />
 
                             <!--somente no caso da select utilizamos o ng-option para interagir como o ng-repeat-->
-                            <select ng-model="form.operadora" ng-options="item.nome group by item.tipo for item in selectOperadoras track by item.id ">
+                            <select ng-model="form.operadora" name="operadora" ng-options="item.nome group by item.tipo for item in selectOperadoras track by item.id " ng-required="true">
                                 <option value="">Selecione</option>
                             </select>
 
@@ -72,14 +107,13 @@
 
                     <br />
 
-                    <button ng-click="addUsuario(form)" ng-disabled="!form.nome || !form.telefone || !form.operadora" class="uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom">Adicionar</button>
+                    <button ng-click="addUsuario(form)" ng-disabled="!usuarioForm.$valid" class="uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom">Adicionar</button>
                     <button ng-click="copyUsuario(usuarios)" ng-disabled="!isUsuarioChecked(usuarios)" class="uk-button uk-button-success uk-width-1-1 uk-margin-small-bottom">Copiar</button>
                     <button ng-click="removeUsuario(usuarios)" ng-disabled="!isUsuarioChecked(usuarios)" class="uk-button uk-button-danger uk-width-1-1 uk-margin-small-bottom">Remover</button>
 
-
-
-
                 </div>
+                <br />
+                <div ng-include="'./view/footer.html'"></div>
             </div>
         </div>
     </body>

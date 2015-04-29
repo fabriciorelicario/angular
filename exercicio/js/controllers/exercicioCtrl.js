@@ -18,6 +18,8 @@ angular.module("exercicio").controller("exercicioCtrl", function($scope){
     $scope.addUsuario = function(form){
         $scope.usuarios.push(angular.copy(form));
         delete $scope.form;
+        //faz com que o formulario seja $pristine novamente assim o alert nao aparecera
+        $scope.usuarioForm.$setPristine;
     };
     $scope.removeUsuario = function(usuarios){
         $scope.usuarios = usuarios.filter(function(elem){
