@@ -3,87 +3,71 @@
     <head>
         <meta charset="utf-8"/>
         <title>Exercicio</title>
-        <!-- css -->
+        <!-- LIBS -->
         <link rel="stylesheet" href="./lib/uikit/css/uikit.min.css" />
         <link rel="stylesheet" href="./lib/uikit/css/uikit.almost-flat.min.css" />
+        <!-- CSS -->
+        <link rel="stylesheet" href="./css/style.css">
 
-        <!-- js -->
-        <script src="./lib/angular/angular.min.js" charset="utf-8"></script>
-        <script src="./js/app.js" charset="utf-8"></script>
-        <script src="./js/controllers/exercicioCtrl.js" charset="utf-8"></script>
+        <!-- LIBS -->
+        <script src="./lib/angular/angular.min.js"></script>
+        <script src="./lib/angular/angular-locale_pt-br.js"></script>
+        <script src="./lib/angular/angular-messages.min.js"></script>
+        <script src="./lib/angular/angular-messages.min.js.map"></script>
+        <!-- APP -->
+        <script src="./js/app.js"></script>
+        <!-- CONTROLLERS -->
+        <script src="./js/controllers/exercicioCtrl.js"></script>
+        <!-- SERVICES -->
+        <script src="./js/services/usuariosAPIfactory.js"></script>
+        <script src="./js/services/operadorasAPIservice.js"></script>
+        <script src="./js/services/tokenGeneratorAPIprovider.js"></script>
+        <!-- FILTERS -->
+        <script src="./js/filters/strConverteCaseFilter.js"></script>
+        <script src="./js/filters/strEllipsisFilter.js"></script>
 
-        <style>
-        .centered{
-            margin-left: auto;
-            margin-right: auto;
-            width: 600px;
-        }
-        .highlight{
-            background-color: #fcf8e3;
-        }
-        .tm-navbar {
-            padding: 15px 0px;
-            border: medium none;
-            background: none repeat scroll 0% 0% #000;
-            position: relative;
-        }
-        .tm-navbar div{
-            color: #FFF;
-            text-shadow: none;
-        }
-        </style>
+        <!-- CONFIGS -->
+        <script src="./js/config/tokenGeneratorConfig.js"></script>
+        <script src="./js/constant/config.js"></script>
 
     </head>
     <body ng-controller="exercicioCtrl" class="uk-height-1-1">
         <div class="uk-vertical-align centered uk-height-1-1">
             <div class="uk-vertical-align-middle">
                 <div class="uk-panel uk-panel-box">
-                
+
                 <div ng-include="'view/head.html'"></div>
 
-                    <!-- MENSAGENS DO CAMPO DE VALIDACAO -->
-                    <!-- USANDO AS PROPRIEDADES $VALID E $INVALID -->
-                    <!-- USANDO O OBJETO $ERROR -->
-                    <!-- {form}{name_input}{} -->
-                    <div ng-if="usuarioForm.$invalid && usuarioForm.$dirty" class="uk-alert uk-alert-warning" data-uk-alert="">
-                        <ul style="list-style: none;">
-                           <li ng-show="usuarioForm.nome.$error.required">
-                                <i class="uk-icon-exclamation-circle"></i> Preencha o seu nome.
-                           </li>
-                           <li ng-show="usuarioForm.nome.$error.minlength">
-                                <i class="uk-icon-exclamation-circle"></i> Preencha o seu nome com no minimo 10 caracteres.
-                           </li>
-                           <li ng-show="usuarioForm.telefone.$error.required">
-                                <i class="uk-icon-exclamation-circle"></i> Preencha o seu telefone.
-                           </li>
-                           <li ng-show="usuarioForm.telefone.$error.pattern">
-                                <i class="uk-icon-exclamation-circle"></i> Preencha com telefone válido Ex: "(99) 9999-9999" .
-                           </li>
-                           <li ng-show="usuarioForm.operadora.$error.required">
-                                <i class="uk-icon-exclamation-circle"></i> Preencha a operadora refenrente ao telefone cadastrado" .
-                           </li> 
-                        </ul>
-                    </div>
+                    <div ng-include="'./view/messages.html'"></div>
 
+                    <!-- //ao digitar está sendo aplicado um filtro no objeto usuarios -->
+                    <div class="uk-form">
+                        <div class="uk-form-icon">
+                            <i class="uk-icon-search"></i>
+                            <input ng-model="inputSearch" class="uk-form-width-large" type="text" placeholder="pesquisar...">
+                        </div>
+                    </div>
 
                     <table ng-if="usuarios.length > 0" class="uk-table uk-table-condensed">
                         <caption><h3 class="uk-panel-title"><i class="uk-icon-user"></i> Lista de Usuários</h3></caption>
                         <thead>
                             <tr>
                                 <th><input ng-click="checkAllUsuarios(usuarios)" ng-model="checkedAll" type="checkbox"/></th>
-                                <th>Nome</th>
-                                <th>Telefone</th>
-                                <th>Operadora</th>
-                                <!-- <th>Cor</th> -->
+                                <th><a href="" ng-click="itemSortBy('nome')">Nome</a></th>
+                                <th><a href="" ng-click="itemSortBy('telefone')">Telefone</a></th>
+                                <th><a href="" ng-click="itemSortBy('operadora')">Operadora</a></th>
+                                <th><a href="" ng-click="itemSortBy('data')">Data</a></th>
+                                <th>Token</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr ng-class="{highlight: item.checked}" ng-repeat="item in usuarios">
+                        <tbody>                           <!--está realizando o filtro apartir do ng-model="inputSearch"-->
+                            <tr ng-class="{highlight: item.checked}" ng-repeat="item in usuarios | filter:inputSearch | orderBy:sortOrder:sortDir">
                                 <td><input ng-model="item.checked" type="checkbox"/></td>
-                                <td>{{item.nome}}</td>
+                                <td>{{item.nome | strConverteCase | strEllipsisFilter:20}}</td>
                                 <td>{{item.telefone}}</td>
-                                <td>{{item.operadora.codigo+' - '+item.operadora.nome}}</td>
-                                <!-- <td><div class="uk-button uk-button-{{item.cor}}"></div></td> -->
+                                <td>{{item.operadora.codigo+' - '+item.operadora.nome | lowercase}}</td>
+                                <td>{{item.data | date:'dd/MM/yyyy'}}</td>
+                                <td>{{item.token}}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -98,7 +82,7 @@
                             <input ng-model="form.telefone" type="text" name="telefone" placeholder="Telefone" ng-required="true" ng-pattern="/^\(\d{2}\)\s\d{4,5}-\d{4}$/" />
 
                             <!--somente no caso da select utilizamos o ng-option para interagir como o ng-repeat-->
-                            <select ng-model="form.operadora" name="operadora" ng-options="item.nome group by item.tipo for item in selectOperadoras track by item.id " ng-required="true">
+                            <select ng-model="form.operadora" name="operadora" ng-options="item.nome + ' ('+ (item.preco | currency) +')' group by item.tipo for item in selectOperadoras track by item.id | orderBy:'tipo'" ng-required="true">
                                 <option value="">Selecione</option>
                             </select>
 

@@ -1,1 +1,1 @@
-angular.module("exercicio", [])
+var app = angular.module("exercicio", ["ngMessages"])

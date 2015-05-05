@@ -1,0 +1,62 @@
+<!-- MENSAGENS DO CAMPO DE VALIDACAO -->
+<!-- USANDO AS PROPRIEDADES $VALID E $INVALID -->
+<!-- USANDO O OBJETO $ERROR -->
+<!-- {form}{name_input}{} -->
+<br />
+<div ng-if="usuarioForm.$invalid && usuarioForm.$dirty" class="uk-alert uk-alert-warning" data-uk-alert="">
+  <ul style="list-style: none;">
+     <li ng-show="usuarioForm.nome.$error.required">
+      <i class="uk-icon-exclamation-circle"></i> Preencha o seu nome.
+    </li>
+    <li ng-show="usuarioForm.nome.$error.minlength">
+      <i class="uk-icon-exclamation-circle"></i> Preencha o seu nome com no minimo 10 caracteres.
+    </li>
+    <li ng-show="usuarioForm.telefone.$error.required">
+      <i class="uk-icon-exclamation-circle"></i> Preencha o seu telefone.
+    </li>
+    <li ng-show="usuarioForm.telefone.$error.pattern">
+      <i class="uk-icon-exclamation-circle"></i> Preencha com telefone válido Ex: "(99) 9999-9999" .
+    </li>
+    <li ng-show="usuarioForm.operadora.$error.required">
+      <i class="uk-icon-exclamation-circle"></i> Preencha a operadora refenrente ao telefone cadastrado" .
+    </li>
+  </ul>
+</div>
+
+<div ng-if="errors.length > 0" class="uk-alert uk-alert-danger" data-uk-alert="">
+  <ul style="list-style: none;">
+    <li ng-repeat="error in errors">
+      <i class="uk-icon-minus-circle"></i> {{error.message}}
+    </li>
+  </ul>
+</div>
+
+<!-- <div ng-messages="usuarioForm.nome.$error" ng-if="usuarioForm.$dirty" class="uk-alert uk-alert-warning" data-uk-alert="">
+  <ul style="list-style: none;">
+     <li ng-message="required">
+      <i class="uk-icon-exclamation-circle"></i> Preencha o seu nome.
+    </li>
+    <li ng-message="minlength">
+      <i class="uk-icon-exclamation-circle"></i> Preencha o seu nome com no minimo 10 caracteres.
+    </li>
+  </ul>
+</div>
+<div ng-messages="usuarioForm.telefone.$error" ng-if="usuarioForm.$dirty" class="uk-alert uk-alert-warning" data-uk-alert="">
+  <ul style="list-style: none;">
+    <li ng-message="required">
+      <i class="uk-icon-exclamation-circle"></i> Preencha o seu telefone.
+    </li>
+    <li ng-message="pattern">
+      <i class="uk-icon-exclamation-circle"></i> Preencha com telefone válido Ex: "(99) 9999-9999" .
+    </li>
+  </ul>
+</div>
+<div ng-messages="usuarioForm.operadora.$error" ng-if="usuarioForm.$dirty" class="uk-alert uk-alert-warning" data-uk-alert="">
+  <ul style="list-style: none;">
+    <li ng-message="required">
+      <i class="uk-icon-exclamation-circle"></i> Preencha a operadora refenrente ao telefone cadastrado" .
+    </li> 
+  </ul>
+</div> -->
+
+
